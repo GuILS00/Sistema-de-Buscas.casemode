@@ -75,35 +75,32 @@ O sistema trata remoções e buscas com eficiência mesmo com grande volume de p
 ### 📌 Execução Inicial (cargo run) e Interface
 Mostra a interface do sistema ao iniciar pelo terminal.
 
-![Interface inicial](imgs/interface_inicial.png)
+![Interface inicial](imgs/interface_inicial.PNG)
 
 ---
 
 ### ➕ Adição de Produtos e Listagem
 Demonstra a adição de produtos e a listagem completa atualizada.
 
-![Adição e listagem de produtos](imgs/adicao_produtos_lista.pnng)
+![Adição e listagem de produtos](imgs/adicao_produtos_lista.PNG)
 
 ---
 
 ### 🔍 Busca Múltipla (nome, marca e categoria)
 Demonstra o funcionamento das buscas com resultados imediatos.
 
-![Busca por nome, marca e categoria](imgs/busca_multipla.png)
+![Busca por nome, marca e categoria](imgs/busca_multipla.PNG)
 
 ---
 
 ### ❌ Remoção e Checagem
 Exemplo de remoção de produto e confirmação da operação.
 
-![Remoção de produtos](imgs/remocao_checagem.png)
+![Remoção de produtos](imgs/remocao_checagem.PNG)
 
 ---
 
 ### 💾 Persistência (Memória mantida após reinício)
 Prova que os dados inseridos são mantidos após reinicialização do sistema.
 
-![Persistência dos dados](imgs/memoria_mantida.png)
-
-GuILS00
-GitHub: GuILS00
+![Persistência dos dados](imgs/memoria_mantida.PNG)
