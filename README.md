@@ -1,40 +1,74 @@
-# 🔍 Sistema de Busca MegaStore
+# Sistema de Busca MegaStore
 
-Este é um sistema de busca eficiente e escalável para o catálogo de produtos da MegaStore, desenvolvido em **Rust**. Ele foi construído com base em um desafio técnico que exige:
+Este é um sistema de busca otimizado para o catálogo de produtos da **MegaStore**, desenvolvido em Rust como parte de um projeto acadêmico. Ele foi projetado para atender aos seguintes critérios:
 
-- Busca eficiente por **nome**, **marca** e **categoria**;
-- Alta performance mesmo com **milhões de produtos**;
-- Estrutura **escalável e segura**;
-- Interface simples via terminal;
-- **Persistência automática** dos dados.
+## ✔️ Requisitos atendidos
+
+### ✅ Busca otimizada
+- **Busca por nome, marca e categoria**, com estrutura de dados eficiente baseada em índices (HashMaps).
+- Resposta imediata mesmo com grande volume de dados.
+
+### ✅ Indexação eficiente
+- Produtos são automaticamente indexados por nome, marca e categoria no momento da adição.
+- Remoções também atualizam os índices dinamicamente.
+
+### ✅ Escalabilidade
+- Código modular e eficiente.
+- Preparado para expansão (ex: mais campos ou filtros).
+- Suporte à persistência em arquivo JSON (`produtos.json`).
+
+### ✅ Segurança dos dados
+- Armazenamento local dos produtos com leitura e escrita automática no início e fim do programa.
+- Evita perda de dados com persistência em disco.
 
 ---
 
 ## 🚀 Funcionalidades
 
-- [x] Adicionar produto
-- [x] Remover produto por nome
-- [x] Buscar por nome
-- [x] Buscar por marca
-- [x] Buscar por categoria
-- [x] Listar todos os produtos
-- [x] Persistência automática em `produtos.json`
+- Adicionar produto
+- Remover produto por nome
+- Buscar produto por:
+  - Nome
+  - Marca
+  - Categoria
+- Listar todos os produtos cadastrados
+- Salvar e carregar produtos automaticamente
 
 ---
 
-## 🛠️ Requisitos
+## 🧠 Tecnologias utilizadas
 
-- [Rust](https://www.rust-lang.org/tools/install) (instale com `rustup`)
-- Git (já deve estar instalado no seu sistema)
+- Linguagem: **Rust**
+- Persistência: `serde` e `serde_json`
+- Estruturas: `HashMap` para indexação
+- Interface: Terminal interativo (via `stdin`/`stdout`)
 
 ---
 
-## ▶️ Como executar
+## 🗃️ Execução local
+
+1. Clone o repositório:
 
 ```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/sistema-busca-megastore.git
-cd sistema-busca-megastore
+git clone https://github.com/GuILS00/Sistema-de-Buscas.casemode.git
 
-# Execute o projeto
+cd Sistema-de-Buscas.casemode
+
 cargo run
+
+sistema_busca_megastore/
+├── src/
+│   └── main.rs
+├── produtos.json       # Base de dados persistente
+├── Cargo.toml          # Dependências
+├── Cargo.lock
+└── README.md           # Este arquivo
+
+
+Os dados são automaticamente carregados do arquivo produtos.json ao iniciar e salvos ao sair.
+
+O sistema trata remoções e buscas com eficiência mesmo com grande volume de produtos.
+
+GuILS00
+GitHub: GuILS00
+
