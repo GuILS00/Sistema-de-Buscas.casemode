@@ -72,3 +72,27 @@ O sistema trata remoções e buscas com eficiência mesmo com grande volume de p
 GuILS00
 GitHub: GuILS00
 
+
+## Demonstração do Sistema (prints de tela)
+
+### Menu interativo e execução inicial
+
+![Interface de menu no terminal](imgs/interface.png)
+
+![Execução com `cargo run`](imgs/cargo_run.png)
+
+### Adição de produtos e listagem geral
+
+![Adição e exibição da lista de produtos](imgs/adicao_lista.png)
+
+### Buscas por nome, marca e categoria
+
+![Busca múltipla funcionando](imgs/busca_multipla.png)
+
+### Remoção e verificação da integridade
+
+![Remoção de produto e checagem](imgs/remocao_checagem.png)
+
+### Persistência: memória mantida após execução
+
+![Dados mantidos após reiniciar](imgs/memoria_mantida.png)
