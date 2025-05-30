@@ -5,7 +5,6 @@ use std::fs::{File, OpenOptions};
 use std::io::{self, BufReader};
 use std::path::Path;
 use serde::{Serialize, Deserialize};
-use std::io::prelude::*;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct Produto {
