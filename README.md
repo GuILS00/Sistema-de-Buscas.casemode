@@ -70,9 +70,7 @@ Os dados são automaticamente carregados do arquivo produtos.json ao iniciar e s
 O sistema trata remoções e buscas com eficiência mesmo com grande volume de produtos.
 
 
-## 🖥️ Demonstração do Sistema
-
-### 📌 Execução Inicial (cargo run) e Interface
+### ▶️ Execução inicial (cargo run) + Interface
 Mostra a interface do sistema ao iniciar pelo terminal.
 
 ![Interface inicial](imgs/interface_inicial.png)
@@ -101,6 +99,6 @@ Exemplo de remoção de produto e confirmação da operação.
 ---
 
 ### 💾 Persistência (Memória mantida após reinício)
-Prova que os dados inseridos são mantidos após reinicialização do sistema.
+Prova que os dados inseridos são mantidos após reinicialização.
 
 ![Persistência dos dados](imgs/memoria_mantida.png)
