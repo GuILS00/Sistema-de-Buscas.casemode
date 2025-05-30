@@ -1,148 +1,125 @@
-// src/main.rs
+// sistema_busca_megastore/src/main.rs
+
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
-use std::io::{self, BufReader, Write};
+use std::io::{self, BufReader};
 use std::path::Path;
-use serde::{Deserialize, Serialize};
+use serde::{Serialize, Deserialize};
+use std::io::prelude::*;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 struct Produto {
     nome: String,
     marca: String,
     categoria: String,
-    preco: f32,
 }
 
-fn carregar_produtos() -> Vec<Produto> {
-    let path = "produtos.json";
-    if Path::new(path).exists() {
-        let file = File::open(path).expect("Erro ao abrir produtos.json");
-        let reader = BufReader::new(file);
-        serde_json::from_reader(reader).unwrap_or_else(|_| Vec::new())
+type BaseDeDados = HashMap<String, Produto>;
+
+fn carregar_dados(caminho: &str) -> BaseDeDados {
+    if Path::new(caminho).exists() {
+        let arquivo = File::open(caminho).expect("Erro ao abrir o arquivo.");
+        let leitor = BufReader::new(arquivo);
+        serde_json::from_reader(leitor).unwrap_or_default()
     } else {
-        Vec::new()
+        BaseDeDados::new()
     }
 }
 
-fn salvar_produtos(produtos: &Vec<Produto>) {
-    let file = OpenOptions::new()
+fn salvar_dados(caminho: &str, dados: &BaseDeDados) {
+    let arquivo = OpenOptions::new()
         .write(true)
         .create(true)
         .truncate(true)
-        .open("produtos.json")
-        .expect("Erro ao abrir produtos.json para escrita");
-    serde_json::to_writer_pretty(file, produtos).expect("Erro ao salvar produtos");
+        .open(caminho)
+        .expect("Erro ao salvar o arquivo.");
+
+    serde_json::to_writer_pretty(arquivo, dados).expect("Erro ao escrever JSON.");
 }
 
-fn construir_indices(produtos: &[Produto]) -> (HashMap<String, Vec<usize>>, HashMap<String, Vec<usize>>, HashMap<String, Vec<usize>>) {
-    let mut por_nome = HashMap::new();
-    let mut por_marca = HashMap::new();
-    let mut por_categoria = HashMap::new();
-
-    for (i, produto) in produtos.iter().enumerate() {
-        por_nome.entry(produto.nome.to_lowercase()).or_insert(vec![]).push(i);
-        por_marca.entry(produto.marca.to_lowercase()).or_insert(vec![]).push(i);
-        por_categoria.entry(produto.categoria.to_lowercase()).or_insert(vec![]).push(i);
-    }
-
-    (por_nome, por_marca, por_categoria)
+fn ler_input(msg: &str) -> String {
+    println!("{}", msg);
+    let mut entrada = String::new();
+    io::stdin().read_line(&mut entrada).unwrap();
+    entrada.trim().to_string()
 }
 
-fn buscar_por_chave(indice: &HashMap<String, Vec<usize>>, chave: &str, produtos: &[Produto]) {
-    let chave = chave.to_lowercase();
-    if let Some(indices) = indice.get(&chave) {
-        for &i in indices {
-            println!("{:?}", produtos[i]);
-        }
+fn adicionar_produto(dados: &mut BaseDeDados) {
+    let nome = ler_input("Nome:");
+    let marca = ler_input("Marca:");
+    let categoria = ler_input("Categoria:");
+
+    let produto = Produto { nome: nome.clone(), marca, categoria };
+    dados.insert(nome, produto);
+    println!("Produto adicionado com sucesso!\n");
+}
+
+fn remover_produto(dados: &mut BaseDeDados) {
+    let nome = ler_input("Nome do produto a remover:");
+    if dados.remove(&nome).is_some() {
+        println!("Produto removido.\n");
     } else {
-        println!("Nenhum produto encontrado com chave '{}'.", chave);
+        println!("Produto não encontrado.\n");
+    }
+}
+
+fn buscar(dados: &BaseDeDados, campo: &str) {
+    let valor = ler_input(&format!("Buscar por {}:", campo));
+    for produto in dados.values() {
+        let campo_valor = match campo {
+            "nome" => &produto.nome,
+            "marca" => &produto.marca,
+            "categoria" => &produto.categoria,
+            _ => "",
+        };
+
+        if campo_valor.eq_ignore_ascii_case(&valor) {
+            println!("{:?}", produto);
+        }
+    }
+    println!("");
+}
+
+fn listar(dados: &BaseDeDados) {
+    if dados.is_empty() {
+        println!("Nenhum produto cadastrado.\n");
+    } else {
+        for produto in dados.values() {
+            println!("{:?}", produto);
+        }
+        println!("");
     }
 }
 
 fn main() {
-    let mut produtos = carregar_produtos();
+    let caminho = "produtos.json";
+    let mut dados = carregar_dados(caminho);
 
     loop {
-        println!("\n===== MENU MEGASTORE =====");
+        println!("\nSistema de Busca - MegaStore");
         println!("1. Adicionar produto");
-        println!("2. Listar produtos");
+        println!("2. Remover produto");
         println!("3. Buscar por nome");
         println!("4. Buscar por marca");
         println!("5. Buscar por categoria");
-        println!("6. Remover produto por nome");
+        println!("6. Listar todos os produtos");
         println!("0. Sair");
 
-        let mut opcao = String::new();
-        io::stdin().read_line(&mut opcao).expect("Erro ao ler opção");
+        let escolha = ler_input("Escolha uma opção:");
 
-        let (por_nome, por_marca, por_categoria) = construir_indices(&produtos);
-
-        match opcao.trim() {
-            "1" => {
-                let mut nome = String::new();
-                let mut marca = String::new();
-                let mut categoria = String::new();
-                let mut preco = String::new();
-
-                println!("Nome:");
-                io::stdin().read_line(&mut nome).unwrap();
-                println!("Marca:");
-                io::stdin().read_line(&mut marca).unwrap();
-                println!("Categoria:");
-                io::stdin().read_line(&mut categoria).unwrap();
-                println!("Preço:");
-                io::stdin().read_line(&mut preco).unwrap();
-
-                let nome = nome.trim().to_string();
-                let marca = marca.trim().to_string();
-                let categoria = categoria.trim().to_string();
-                let preco: f32 = preco.trim().parse().unwrap_or(0.0);
-
-                if nome.is_empty() || marca.is_empty() || categoria.is_empty() {
-                    println!("Todos os campos devem ser preenchidos corretamente.");
-                } else {
-                    let novo = Produto { nome, marca, categoria, preco };
-                    produtos.push(novo);
-                    println!("Produto adicionado.");
-                }
-            }
-            "2" => {
-                for produto in &produtos {
-                    println!("{:?}", produto);
-                }
-            }
-            "3" => {
-                let mut chave = String::new();
-                println!("Nome:");
-                io::stdin().read_line(&mut chave).unwrap();
-                buscar_por_chave(&por_nome, chave.trim(), &produtos);
-            }
-            "4" => {
-                let mut chave = String::new();
-                println!("Marca:");
-                io::stdin().read_line(&mut chave).unwrap();
-                buscar_por_chave(&por_marca, chave.trim(), &produtos);
-            }
-            "5" => {
-                let mut chave = String::new();
-                println!("Categoria:");
-                io::stdin().read_line(&mut chave).unwrap();
-                buscar_por_chave(&por_categoria, chave.trim(), &produtos);
-            }
-            "6" => {
-                let mut nome = String::new();
-                println!("Nome do produto para remover:");
-                io::stdin().read_line(&mut nome).unwrap();
-                let nome = nome.trim().to_lowercase();
-                produtos.retain(|p| p.nome.to_lowercase() != nome);
-                println!("Se existia, produto removido.");
-            }
+        match escolha.as_str() {
+            "1" => adicionar_produto(&mut dados),
+            "2" => remover_produto(&mut dados),
+            "3" => buscar(&dados, "nome"),
+            "4" => buscar(&dados, "marca"),
+            "5" => buscar(&dados, "categoria"),
+            "6" => listar(&dados),
             "0" => {
-                salvar_produtos(&produtos);
-                println!("Encerrando e salvando...");
+                salvar_dados(caminho, &dados);
+                println!("Dados salvos. Encerrando...");
                 break;
-            }
-            _ => println!("Opção inválida."),
+            },
+            _ => println!("Opção inválida.\n"),
         }
     }
 }
