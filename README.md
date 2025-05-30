@@ -67,3 +67,38 @@ Os produtos continuam disponíveis após reiniciar o programa graças ao produto
 👨‍💻 Desenvolvido por
 GuILS00
 🔗 GitHub
+
+## 🖥️ Demonstração do Sistema
+
+### 📌 Interface do Sistema
+Mostra a interface do sistema ao iniciar pelo terminal.
+
+![Interface](imgs/interface.png)
+
+---
+
+### ➕ Adição de Produtos e Listagem
+Demonstra a adição de produtos e a listagem completa atualizada.
+
+![Adição e Listagem](imgs/adicao_e_lista.png)
+
+---
+
+### ❌ Remoção de Produtos
+Exemplo de remoção de produto e confirmação da operação.
+
+![Exclusão](imgs/exclusao.png)
+
+---
+
+### 🔍 Busca por Nome, Marca e Categoria
+Demonstra o funcionamento das buscas com resultados imediatos.
+
+![Busca](imgs/marca_categoria_nome.png)
+
+---
+
+### 💾 Persistência de Dados
+Prova que os dados inseridos são mantidos após reinicialização do sistema.
+
+![Persistência](imgs/memoria_consistente.png)
